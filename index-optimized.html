@@ -1,0 +1,27 @@
+setTimeout(() => {
+    // Functionality to continue the blog functionality.
+    const blogPostForm = document.getElementById('blogPostForm');
+    const blogPostsContainer = document.getElementById('blogPostsContainer');
+
+    function displayPost(title, content) {
+        const postElement = document.createElement('div');
+        postElement.classList.add('blog-post');
+        postElement.innerHTML = `<h3>${title}</h3><p>${content}</p>`;
+        blogPostsContainer.appendChild(postElement);
+    }
+
+    blogPostForm.addEventListener('submit', (event) => {
+        event.preventDefault(); // Prevent default form submission
+
+        const title = document.getElementById('title').value;
+        const content = document.getElementById('content').value;
+
+        if (title && content) {
+            displayPost(title, content);
+            blogPostForm.reset(); // Reset the form fields
+        } else {
+            alert('Please fill in both title and content fields.');
+        }
+    });
+
+}, 0);
