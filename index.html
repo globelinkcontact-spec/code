@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optimized Globe</title>
+    <style>
+        /* Reset default browser styling */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        /* Mobile-first styles */
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .globe {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+            background: radial-gradient(circle at center, #34c1ff, #005b99);
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+        }
+        /* Responsive image */
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+        @media (min-width: 600px) {
+            .globe {
+                height: 75vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="globe">
+            <img data-src="path/to/your/image.jpg" alt="A globe representation" class="lazyload">
+        </div>
+    </div>
+    <script>
+        // Lazy loading images
+        document.addEventListener('DOMContentLoaded', function() {
+            const images = document.querySelectorAll('img.lazyload');
+            const config = {
+                rootMargin: '0px 0px',
+                threshold: 0.1
+            };
+            let imageObserver; 
+            if ('IntersectionObserver' in window) {
+                imageObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if(entry.isIntersecting) {
+                            const img = entry.target;
+                            img.src = img.dataset.src;
+                            img.classList.remove('lazyload');
+                            observer.unobserve(img);
+                        }
+                    });
+                }, config);
+                images.forEach(image => {
+                    imageObserver.observe(image);
+                });
+            } else {
+                // Load all images if not supported
+                images.forEach(image => {
+                    image.src = image.dataset.src;
+                });
+            }
+        });
+    </script>
+</body>
+</html>
